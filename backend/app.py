@@ -5,7 +5,7 @@ from pymongo import MongoClient
 from transformers import AutoTokenizer, AutoModelForCausalLM
 import time
 import json
-import fitz  # PyMuPDF
+import fitz  
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_community.vectorstores import FAISS
@@ -13,7 +13,7 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.chains.question_answering import load_qa_chain
 from langchain.prompts import PromptTemplate
 from dotenv import load_dotenv
-import google.generativeai as genai  # Ensure this import is present
+import google.generativeai as genai 
 import os
 
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
@@ -22,22 +22,18 @@ app = Flask(__name__)
 bcrypt = Bcrypt(app)
 CORS(app, resources={r"/*": {"origins": "*", "methods": ["GET", "POST", "OPTIONS"], "allow_headers": ["Content-Type", "Authorization"]}}, supports_credentials=True)
 
-# Replace with your MongoDB URI and database setup
 MONGO_URI = 'mongodb+srv://samhitmantrala8:PrProject@cluster0.k63kxvp.mongodb.net/prproject?retryWrites=true&w=majority&appName=Cluster0'
 client = MongoClient(MONGO_URI)
 db = client['mydatabase']
 users_collection = db['users']
-messages_collection = db['messages']  # Ensure this is defined
+messages_collection = db['messages'] 
 
-# Ensure app.secret_key is set for session management
 app.secret_key = '1a2b3c4d5e6f'  
 
-# Load the Google API key
 load_dotenv()
 api_key = os.getenv("GOOGLE_API_KEY")
 genai.configure(api_key=api_key)
 
-# Predefined list of words to check in the response
 predefined_words = [
     "sorry", "don't", "have", "information", "related", "query",
     "context", "does", "not", "mention", "anything",
@@ -48,7 +44,7 @@ predefined_words = [
 def get_pdf_text(pdf_docs):
     text = ""
     for pdf in pdf_docs:
-        pdf_path = os.path.join("pdfs", pdf)  # Update path to include 'pdfs' folder
+        pdf_path = os.path.join("pdfs", pdf)  
         pdf_document = fitz.open(pdf_path)
         for page_num in range(len(pdf_document)):
             page = pdf_document.load_page(page_num)
@@ -82,7 +78,6 @@ def get_conversational_chain():
 def user_input(user_question):
     embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
     
-    # Load FAISS index with dangerous deserialization enabled
     new_db = FAISS.load_local("faiss_index", embeddings, allow_dangerous_deserialization=True)
     docs = new_db.similarity_search(user_question)
 
@@ -93,7 +88,7 @@ def user_input(user_question):
     return response["output_text"]
 
 def process_user_question(user_question, pdf_filename):
-    # Extract text from the specified PDF file
+
     pdf_text = get_pdf_text([pdf_filename])
     text_chunks = get_text_chunks(pdf_text)
     get_vector_store(text_chunks)
@@ -132,7 +127,7 @@ def signup():
 @app.route('/cul_resp', methods=['POST'])
 def cul_resp():
     user_question = request.json.get('message')
-    email = request.json.get('email')  # Ensure email is fetched from session
+    email = request.json.get('email')  
 
     if not user_question:
         return Response("Question is required", status=400, mimetype='text/plain')
@@ -144,7 +139,6 @@ def cul_resp():
             response = model.generate_content(user_question)
             response_text = response.text
         
-        # Save both user question and bot response to MongoDB
         messages_collection.insert_one({
             "user_message": user_question,
             "bot_response": response_text,
@@ -163,7 +157,7 @@ def cul_resp():
 @app.route('/tech_resp', methods=['POST'])
 def tech_resp():
     user_question = request.json.get('message')
-    email = request.json.get('email')  # Ensure email is fetched from session
+    email = request.json.get('email') 
 
     if not user_question:
         return Response("Question is required", status=400, mimetype='text/plain')
@@ -175,7 +169,6 @@ def tech_resp():
             response = model.generate_content(user_question)
             response_text = response.text
         
-        # Save both user question and bot response to MongoDB
         messages_collection.insert_one({
             "user_message": user_question,
             "bot_response": response_text,
@@ -193,7 +186,7 @@ def tech_resp():
 @app.route('/cn_acad', methods=['POST'])
 def cn_resp():
     user_question = request.json.get('message')
-    email = request.json.get('email')  # Ensure email is fetched from session
+    email = request.json.get('email') 
 
     if not user_question:
         return Response("Question is required", status=400, mimetype='text/plain')
@@ -205,7 +198,6 @@ def cn_resp():
             response = model.generate_content(user_question)
             response_text = response.text
         
-        # Save both user question and bot response to MongoDB
         messages_collection.insert_one({
             "user_message": user_question,
             "bot_response": response_text,
@@ -225,7 +217,7 @@ def cn_resp():
 @app.route('/dbms_acad', methods=['POST'])
 def dbms_resp():
     user_question = request.json.get('message')
-    email = request.json.get('email')  # Ensure email is fetched from session
+    email = request.json.get('email') 
 
     if not user_question:
         return Response("Question is required", status=400, mimetype='text/plain')
@@ -237,7 +229,6 @@ def dbms_resp():
             response = model.generate_content(user_question)
             response_text = response.text
         
-        # Save both user question and bot response to MongoDB
         messages_collection.insert_one({
             "user_message": user_question,
             "bot_response": response_text,
@@ -257,7 +248,7 @@ def dbms_resp():
 @app.route('/oops_acad', methods=['POST'])
 def oops_resp():
     user_question = request.json.get('message')
-    email = request.json.get('email')  # Ensure email is fetched from session
+    email = request.json.get('email') 
 
     if not user_question:
         return Response("Question is required", status=400, mimetype='text/plain')
@@ -269,7 +260,6 @@ def oops_resp():
             response = model.generate_content(user_question)
             response_text = response.text
         
-        # Save both user question and bot response to MongoDB
         messages_collection.insert_one({
             "user_message": user_question,
             "bot_response": response_text,
@@ -289,7 +279,7 @@ def oops_resp():
 @app.route('/os_acad', methods=['POST'])
 def os_resp():
     user_question = request.json.get('message')
-    email = request.json.get('email')  # Ensure email is fetched from session
+    email = request.json.get('email') 
 
     if not user_question:
         return Response("Question is required", status=400, mimetype='text/plain')
@@ -301,7 +291,6 @@ def os_resp():
             response = model.generate_content(user_question)
             response_text = response.text
         
-        # Save both user question and bot response to MongoDB
         messages_collection.insert_one({
             "user_message": user_question,
             "bot_response": response_text,
@@ -322,7 +311,7 @@ def os_resp():
 def get_chat_history():
     email = session.get('email')
     if not email:
-        print("No email found in session")  # Debugging
+        print("No email found in session") 
         return Response("User not logged in", status=401, mimetype='text/plain')
     
     try:
@@ -334,7 +323,7 @@ def get_chat_history():
         
         return Response(json.dumps(chat_history_list), status=200, mimetype='application/json')
     except Exception as e:
-        print(f"Error in get_chat_history: {str(e)}")  # Log error for debugging
+        print(f"Error in get_chat_history: {str(e)}") 
         return Response(f"Error: {str(e)}", status=500, mimetype='text/plain')
 
 @app.route('/api/auth/signin', methods=['POST'])
@@ -363,7 +352,7 @@ def signin():
 @app.route('/api/auth/signout', methods=['POST'])
 def sign_out():
     try:
-        session.pop('email', None)  # Clear the session data
+        session.pop('email', None)   
         return Response("Successfully signed out", status=200)
     except Exception as e:
         return Response(f"Error: {str(e)}", status=500)
@@ -371,7 +360,7 @@ def sign_out():
 @app.route('/geninfo', methods=['POST'])
 def geninfo():
     user_question = request.json.get('message')
-    email = request.json.get('email')  # Ensure email is fetched from session
+    email = request.json.get('email') 
 
     if not user_question:
         return Response("Question is required", status=400, mimetype='text/plain')
@@ -383,7 +372,6 @@ def geninfo():
             response = model.generate_content(user_question)
             response_text = response.text
         
-        # Save both user question and bot response to MongoDB
         messages_collection.insert_one({
             "user_message": user_question,
             "bot_response": response_text,
@@ -414,7 +402,6 @@ def placement():
             response = model.generate_content(user_question)
             response_text = response.text
         
-        # Save both user question and bot response to MongoDB
         messages_collection.insert_one({
             "user_message": user_question,
             "bot_response": response_text,
@@ -433,36 +420,31 @@ def placement():
 @app.route('/placementG', methods=['POST'])
 def placementG():
     user_question = request.json.get('message')
-    email = request.json.get('email')  # Ensure email is fetched from session
+    email = request.json.get('email') 
 
     if not user_question:
         return Response("Question is required", status=400, mimetype='text/plain')
 
     try:
-        # Tokenize the user question
         inputs = tokenizer(user_question, return_tensors="pt")
 
-        with torch.no_grad():  # Disable gradient calculation for inference
+        with torch.no_grad():  
             outputs = model.generate(
                 **inputs,
-                max_length=100,  # Adjust the maximum length as needed
-                num_beams=5,     # Use beam search for better quality
-                no_repeat_ngram_size=2,  # Avoid repeating n-grams
-                early_stopping=True  # Stop when all beams reach the end token
+                max_length=100,  
+                num_beams=5,    
+                no_repeat_ngram_size=2, 
+                early_stopping=True  
             )
 
-        # Decode the response
         response_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
         
-        # Clean the response text
         response_text = response_text.replace('<Human>', '').replace('<AI>', '').strip()
 
         if needs_fallback(response_text):
-            # Fallback to Google Generative AI if needed
-            google_model = get_google_model()  # Replace with the appropriate function
-            response_text = google_model(user_question)  # Update this to use the right method
+            google_model = get_google_model()  
+            response_text = google_model(user_question) 
 
-        # Save both user question and bot response to MongoDB
         messages_collection.insert_one({
             "user_message": user_question,
             "bot_response": response_text,
@@ -482,7 +464,7 @@ def placementG():
 @app.route('/sports_resp', methods=['POST'])
 def sports_resp():
     user_question = request.json.get('message')
-    email = request.json.get('email')  # Ensure email is fetched from session
+    email = request.json.get('email') 
 
     if not user_question:
         return Response("Question is required", status=400, mimetype='text/plain')
@@ -494,7 +476,6 @@ def sports_resp():
             response = model.generate_content(user_question)
             response_text = response.text
         
-        # Save both user question and bot response to MongoDB
         messages_collection.insert_one({
             "user_message": user_question,
             "bot_response": response_text,

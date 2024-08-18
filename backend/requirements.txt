@@ -1,0 +1,11 @@
+Flask
+Flask-Bcrypt
+Flask-Cors
+pymongo
+transformers
+torch
+PyMuPDF
+dnspython
+Flask-session
+sentence-transformers
+openai

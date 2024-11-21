@@ -9,3 +9,4 @@ dnspython
 Flask-session
 sentence-transformers
 openai
+dotenv

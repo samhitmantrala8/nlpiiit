@@ -1,5 +1,5 @@
 
-# IIIT Jabalpur Chatbot
+# Institute Chatbot
 
 ## Aim
 The aim of this project was to create a comprehensive chatbot for IIIT Jabalpur. The chatbot is designed to provide detailed information to prospective students on various topics such as placement statistics, sports facilities, cultural clubs, campus life, and coding culture.

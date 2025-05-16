@@ -1,0 +1,9 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+
+body{
+    background-color: rgb(241, 245, 241);
+}
+/* Place this in your CSS file or style block */

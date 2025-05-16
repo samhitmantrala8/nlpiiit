@@ -338,7 +338,7 @@ setproctitle
 sgmllib3k
 simple-websocket
 six
-sklearn
+scikit-learn
 smart-open
 smmap
 sniffio

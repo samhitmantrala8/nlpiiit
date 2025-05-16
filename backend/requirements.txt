@@ -71,7 +71,7 @@ distro
 dnspython
 docker-pycreds
 docopt
-en_core_web_sm
+en_core_web_sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl#sha256=1932429db727d4bff3deed6b34cfc05df17794f4a52eeb26cf8928f7c1a0fb85
 et_xmlfile
 etils
 exceptiongroup
@@ -251,7 +251,7 @@ paho-mqtt
 pandas
 pandocfilters
 parso
-peft
+peft @ git+https://github.com/huggingface/peft.git@78daa4cf7624ec9c2c38fe73b0317b61428ca26b
 pillow
 pinecone-client
 pipeline

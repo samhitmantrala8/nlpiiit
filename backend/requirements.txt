@@ -5,7 +5,7 @@ Flask_Bcrypt==1.0.1
 Flask_Cors==5.0.0
 langchain==0.3.25
 langchain_community==0.3.24
-protobuf==6.31.0
+protobuf==4.23.3
 pymongo==4.13.0
 python-dotenv==1.1.0
 gunicorn

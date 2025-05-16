@@ -8,3 +8,4 @@ langchain_google_genai==2.1.4
 protobuf==6.31.0
 pymongo==4.13.0
 python-dotenv==1.1.0
+gunicorn

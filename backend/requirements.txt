@@ -295,7 +295,6 @@ pyparsing
 pypdf
 PyPDF2
 PyPika
-pypiwin32
 PyPrind
 pyproject_hooks
 pyreadline3
@@ -311,8 +310,6 @@ python-socketio
 python-utils
 pyttsx3
 pytz
-pywin32
-pywinpty
 PyYAML
 pyzmq
 qtconsole

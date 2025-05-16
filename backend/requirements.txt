@@ -39,3 +39,4 @@ pytz
 PyYAML
 pyzmq
 response
+gunicorn

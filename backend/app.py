@@ -19,5 +19,8 @@ app.register_blueprint(generalinfo_controller.geninfo_bp)
 app.register_blueprint(placement_controller.placement_bp)
 app.register_blueprint(subject_controllers.subject_bp)
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8000)
+
+port = int(os.environ.get("PORT", 10000))
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=port)
